@@ -69,7 +69,7 @@ class PublicBookingController extends Controller
         if (!session()->has('booking_data')) {
             return redirect()
                 ->route('public.reservas.datos', $service)
-                ->with('error', 'Completa tus datos antes de confirmar la reserva.');
+                ->with('error', 'Tu sesión expiró o abriste esta página en otra pestaña. Vuelve a ingresar tus datos para continuar.');
         }
 
         $data = $request->validate([

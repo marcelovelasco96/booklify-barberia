@@ -50,10 +50,9 @@
                 </div>
 
                 <div class="pt-4 border-t">
-                    <a href="{{ route('public.reservas.datos', $service) }}"
-                        class="w-full inline-flex justify-center rounded-md bg-indigo-600 px-4 py-3 text-sm font-medium text-white hover:bg-indigo-700">
-                        Confirmar y continuar
-                    </a>
+                    <x-public.btn-gold :href="route('public.reservas.datos', $service)">
+                        Continuar
+                    </x-public.btn-gold>
                 </div>
 
             </div>

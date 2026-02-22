@@ -55,10 +55,10 @@
 
                     <input type="text" name="website" style="display:none" autocomplete="off" tabindex="-1">
 
-                    @if ($errors->any())
-                        <div class="rounded-md border border-red-200 bg-red-50 p-4">
-                            <div class="font-medium text-red-800 mb-2">Revisa lo siguiente:</div>
-                            <ul class="list-disc pl-5 text-sm text-red-700 space-y-1">
+                    @if ($errors->any() && !($errors->count() === 1 && $errors->has('throttle')))
+                        <div class="..."> {{-- tu contenedor actual --}}
+                            <p class="...">Revisa lo siguiente:</p>
+                            <ul class="...">
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
@@ -95,11 +95,16 @@
                         </select>
                     </div>
 
+                    @if ($errors->has('throttle'))
+                        <div class="mb-4 rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+                            {{ $errors->first('throttle') }}
+                        </div>
+                    @endif
+
                     <div class="pt-4 border-t">
-                        <button type="submit" onclick="this.disabled=true; this.form.submit();"
-                            class="w-full inline-flex justify-center rounded-md bg-indigo-600 px-4 py-3 text-sm font-medium text-white hover:bg-indigo-700">
+                        <x-public.btn-gold type="submit">
                             Confirmar reserva
-                        </button>
+                        </x-public.btn-gold>
                     </div>
                 </form>
             </div>

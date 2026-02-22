@@ -28,6 +28,13 @@
         </header>
 
         <main class="max-w-3xl mx-auto px-4 py-10">
+
+            @if (session('error'))
+                <div class="mb-4 rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <div class="bg-white border rounded-lg p-8">
                 <div class="mb-6">
                     <div class="text-lg font-semibold">Completa para continuar</div>
@@ -60,10 +67,9 @@
                     </div>
 
                     <div class="pt-2">
-                        <button type="submit"
-                            class="w-full inline-flex justify-center rounded-md bg-indigo-600 px-4 py-3 text-sm font-medium text-white hover:bg-indigo-700">
+                        <x-public.btn-gold type="submit">
                             Elegir fecha y hora
-                        </button>
+                        </x-public.btn-gold>
                     </div>
                 </form>
 

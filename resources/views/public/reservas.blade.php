@@ -12,10 +12,14 @@
 <body class="bg-gray-50 text-gray-900">
 
     <div class="min-h-screen">
-        <header class="border-b bg-white">
-            <div class="max-w-5xl mx-auto px-4 py-6">
-                <h1 class="text-2xl font-bold">Reservas</h1>
-                <p class="text-sm text-gray-600 mt-1">Elige un servicio para continuar.</p>
+        <header class="border-b text-white" style="background:#080b10;">
+            <div class="flex items-center gap-3">
+                <img src="{{ asset('images/cusi-logo.png') }}" alt="CUSI BARBERSHOP"
+                    style="height:72px; max-width:180px; object-fit:contain;" class="rounded bg-black/20 p-1">
+                <div>
+                    <h1 class="text-2xl font-bold text-white">{{ config('app.name') }}</h1>
+                    <p class="text-sm text-gray-300 mt-1">Reserva tu cita en pocos segundos.</p>
+                </div>
             </div>
         </header>
 
@@ -45,7 +49,9 @@
                             </div>
 
                             <a href="{{ route('public.reservas.show', $service) }}"
-                                class="mt-5 block w-full rounded-md bg-indigo-600 px-4 py-3 text-center text-sm font-medium text-white hover:bg-indigo-700">
+                                style="display:block; width:100%; margin-top:16px; background:#c9a227; color:#0b0f14; padding:12px 14px; border-radius:10px; font-weight:600; text-align:center; box-shadow:0 8px 20px rgba(0,0,0,.15); border:1px solid rgba(0,0,0,.12); transition:0.2s;"
+                                onmouseover="this.style.background='#d4af37'"
+                                onmouseout="this.style.background='#c9a227'">
                                 Reservar
                             </a>
 

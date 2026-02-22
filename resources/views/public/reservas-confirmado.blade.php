@@ -50,7 +50,9 @@
 
             @if ($wa)
                 <a href="{{ $wa }}" target="_blank"
-                    class="inline-flex items-center rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700">
+                    style="display:inline-flex; align-items:center; justify-content:center; padding:12px 18px; border:2px solid #16a34a; color:#16a34a; border-radius:10px; font-weight:600; text-decoration:none; transition:0.2s;"
+                    onmouseover="this.style.background='#16a34a'; this.style.color='#ffffff';"
+                    onmouseout="this.style.background='transparent'; this.style.color='#16a34a';">
                     Escribir por WhatsApp
                 </a>
             @endif
@@ -65,10 +67,9 @@
             </p>
 
             <div class="pt-4">
-                <a href="{{ route('public.reservas') }}"
-                    class="inline-flex items-center justify-center rounded-md bg-indigo-600 px-6 py-3 text-sm font-medium text-white hover:bg-indigo-700">
+                <x-public.btn-gold :href="route('public.reservas')">
                     Volver al inicio
-                </a>
+                </x-public.btn-gold>
             </div>
 
         </div>
