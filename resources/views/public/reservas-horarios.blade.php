@@ -16,20 +16,13 @@
 <body class="bg-gray-50 text-gray-900">
 
     <div class="min-h-screen">
-        <header class="border-b bg-white">
-            <div class="max-w-5xl mx-auto px-4 py-6 flex items-center justify-between">
-                <div>
-                    <h1 class="text-2xl font-bold">Fecha y hora</h1>
-                    <p class="text-sm text-gray-600 mt-1">
-                        Servicio: <span class="font-medium text-gray-800">{{ $service->name }}</span>
-                    </p>
-                </div>
-                <a href="{{ route('public.reservas.datos', $service) }}"
-                    class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
-                    ← Volver
-                </a>
-            </div>
-        </header>
+
+        @include('public.partials.header', [
+            'logoPath' => 'images/cusi-logo.png',
+            'title' => 'Fecha y hora',
+            'subtitle' => 'Servicio: <span class="font-medium text-white">' . e($service->name) . '</span>',
+            'backUrl' => route('public.reservas.datos', $service),
+        ])
 
         <main class="max-w-3xl mx-auto px-4 py-10">
             <div class="bg-white border rounded-lg p-8">
@@ -55,10 +48,10 @@
 
                     <input type="text" name="website" style="display:none" autocomplete="off" tabindex="-1">
 
-                    @if ($errors->any() && !($errors->count() === 1 && $errors->has('throttle')))
-                        <div class="..."> {{-- tu contenedor actual --}}
-                            <p class="...">Revisa lo siguiente:</p>
-                            <ul class="...">
+                    @if ($errors->any())
+                        <div class="mb-4 rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+                            <div class="font-semibold mb-1">Revisa lo siguiente:</div>
+                            <ul class="list-disc list-inside space-y-1">
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
@@ -72,14 +65,14 @@
                     <input type="hidden" name="email" value="{{ $bookingData['email'] ?? '' }}">
 
                     <div>
-                        <div class="text-lg font-semibold">Elige una fecha</div>
+                        <div class="text-lg font-semibold">Selecciona tu fecha</div>
                         <input type="date" name="booking_date" value="{{ old('booking_date') }}"
                             class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                             required>
                     </div>
 
                     <div>
-                        <div class="text-lg font-semibold">Elige una hora</div>
+                        <div class="text-lg font-semibold">Selecciona tu horario</div>
                         <select name="booking_time"
                             class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                             required>

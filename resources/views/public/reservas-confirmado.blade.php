@@ -21,7 +21,7 @@
             </h2>
 
             <p class="text-gray-600 mb-4">
-                Tu reserva fue registrada correctamente. Guarda este código para cualquier consulta.
+                Tu cita en CUSI BARBERSHOP fue confirmada.
             </p>
 
             @php($code = str_pad($booking->id, 5, '0', STR_PAD_LEFT))
@@ -34,7 +34,7 @@
             @endif
 
             <p class="mt-3 text-sm text-gray-600">
-                Guarda este código. Por seguridad, esta página no se podrá volver a abrir desde el enlace.
+                Guarda y presenta este código en la barbería.
             </p>
 
             @if ($booking)
@@ -58,7 +58,7 @@
             @endif
 
             <p class="text-sm text-gray-500">
-                Si necesitas cambiar algo, puedes escribirnos por WhatsApp.
+                Si tienes alguna consulta adicional, puedes escribirnos por WhatsApp.
                 @if (!empty($booking?->email))
                     También te enviamos un correo con los detalles.
                 @else

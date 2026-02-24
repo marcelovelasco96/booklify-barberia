@@ -129,9 +129,9 @@ class PublicBookingController extends Controller
             'status'        => 'confirmed',
         ]);
 
-        if (!empty($booking->email)) {
+        if (!empty($booking->email) && app()->environment('production')) {
             Mail::to($booking->email)->send(new BookingConfirmedMail($booking));
-        }
+        }   
 
         session()->forget('booking_data');
 

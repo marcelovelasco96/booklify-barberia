@@ -12,39 +12,27 @@
 <body class="bg-gray-50 text-gray-900">
 
     <div class="min-h-screen">
-        <header class="border-b bg-white">
-            <div class="max-w-5xl mx-auto px-4 py-6 flex items-center justify-between">
-                <div>
-                    <h1 class="text-2xl font-bold">{{ $service->name }}</h1>
-                    <p class="text-sm text-gray-600 mt-1">Confirma los detalles del servicio.</p>
-                </div>
-                <a href="{{ route('public.reservas') }}"
-                    class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
-                    ← Volver
-                </a>
-            </div>
-        </header>
+
+        @include('public.partials.header', [
+            'logoPath' => 'images/cusi-logo.png',
+            'title' => $service->name,
+            'subtitle' => 'Confirma los detalles del servicio.',
+            'backUrl' => route('public.reservas'),
+        ])
 
         <main class="max-w-3xl mx-auto px-4 py-10">
-            <div class="bg-white border rounded-lg p-8 space-y-6">
+            <div class="bg-white border rounded-xl p-8 space-y-6 shadow-sm">
 
-                <div class="space-y-2">
-                    <div class="text-lg font-semibold">Servicio</div>
-                    <div class="text-gray-700">{{ $service->name }}</div>
-                </div>
+                <div class="space-y-1">
+                    <div class="text-2xl font-bold tracking-tight text-gray-900">
+                        {{ $service->name }}
+                    </div>
 
-                <div class="space-y-2">
-                    <div class="text-lg font-semibold">Duración</div>
-                    <div class="text-gray-700">{{ $service->duration_minutes }} minutos</div>
-                </div>
-
-                <div class="space-y-2">
-                    <div class="text-lg font-semibold">Precio</div>
-                    <div class="text-gray-700">
-                        @if (is_null($service->price))
-                            Precio a consultar
-                        @else
-                            S/ {{ number_format($service->price, 2) }}
+                    <div class="text-sm text-gray-600 flex items-center gap-2">
+                        <span>{{ $service->duration_minutes }} minutos</span>
+                        @if ($service->price)
+                            <span class="text-gray-400">•</span>
+                            <span>S/ {{ number_format($service->price, 2) }}</span>
                         @endif
                     </div>
                 </div>
