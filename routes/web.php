@@ -33,6 +33,9 @@ Route::get('/reservas', [PublicBookingController::class, 'index'])
 Route::get('/reservas/{service}', [PublicBookingController::class, 'show'])
     ->name('public.reservas.show');
 
+Route::get('/reservas/{service}/barberos', [PublicBookingController::class, 'barberos'])
+    ->name('public.reservas.barberos');
+
 Route::get('/reservas/{service}/datos', [PublicBookingController::class, 'datos'])
     ->name('public.reservas.datos');
 
@@ -43,6 +46,9 @@ Route::post(
     '/reservas/{service}/horarios',
     [PublicBookingController::class, 'horariosPost']
 )->name('public.reservas.horarios.post');
+
+Route::get('/reservas/{service}/ocupados', [PublicBookingController::class, 'ocupados'])
+    ->name('public.reservas.ocupados');
 
 Route::post('/reservas/{service}/confirmar', [PublicBookingController::class, 'confirmar'])
     ->middleware('throttle:10,1')

@@ -7,6 +7,7 @@ use App\Models\Booking;
 use Illuminate\Http\Request;
 use App\Models\BlockedSlot;
 use App\Mail\BookingConfirmedMail;
+use App\Models\Barber;
 use Illuminate\Support\Facades\Mail;
 
 class PublicBookingController extends Controller
@@ -25,6 +26,21 @@ class PublicBookingController extends Controller
         abort_unless($service->is_active, 404);
 
         return view('public.reservas-show', compact('service'));
+    }
+
+    public function barberos(Service $service)
+    {
+        abort_unless($service->is_active, 404);
+
+        $barbers = Barber::where('is_active', true)
+            ->orderBy('rating', 'desc')
+            ->orderBy('name')
+            ->get();
+
+        return view('public.reservas-barberos', compact(
+            'service',
+            'barbers'
+        ));
     }
 
     public function datos(Service $service)
@@ -131,7 +147,7 @@ class PublicBookingController extends Controller
 
         if (!empty($booking->email) && app()->environment('production')) {
             Mail::to($booking->email)->send(new BookingConfirmedMail($booking));
-        }   
+        }
 
         session()->forget('booking_data');
 
@@ -185,5 +201,25 @@ class PublicBookingController extends Controller
         ]);
 
         return redirect()->route('public.reservas.horarios', $service);
+    }
+
+    public function ocupados(Request $request, Service $service)
+    {
+        abort_unless($service->is_active, 404);
+
+        $data = $request->validate([
+            'date' => ['required', 'date'],
+        ]);
+
+        $ocupados = Booking::where('service_id', $service->id)
+            ->where('booking_date', $data['date'])
+            ->where('status', 'confirmed')
+            ->pluck('booking_time')
+            ->map(fn($time) => \Illuminate\Support\Str::substr($time, 0, 5))
+            ->values();
+
+        return response()->json([
+            'ocupados' => $ocupados,
+        ]);
     }
 }
