@@ -43,14 +43,28 @@ class PublicBookingController extends Controller
         ));
     }
 
-    public function datos(Service $service)
+    public function datos(Request $request, Service $service)
     {
         abort_unless($service->is_active, 404);
 
         session()->forget('booking_data');
 
+        $barber = null;
+
+        if ($request->filled('barber')) {
+            $barber = Barber::where('is_active', true)
+                ->find($request->query('barber'));
+        }
+
+        if (!$barber) {
+            return redirect()->route('public.reservas.barberos', $service)
+                ->with('error', 'Selecciona un barbero para continuar.');
+        }
+
+        session(['selected_barber_id' => $barber->id]);
+
         return response()
-            ->view('public.reservas-datos', compact('service'))
+            ->view('public.reservas-datos', compact('service', 'barber'))
             ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
     }
 
@@ -66,8 +80,23 @@ class PublicBookingController extends Controller
                 ->with('error', 'Completa tus datos antes de elegir un horario.');
         }
 
+        if (!session()->has('selected_barber_id')) {
+            return redirect()
+                ->route('public.reservas.barberos', $service)
+                ->with('error', 'Selecciona un barbero para continuar.');
+        }
+
+        $barber = Barber::where('is_active', true)
+            ->find(session('selected_barber_id'));
+
+        if (!$barber) {
+            return redirect()
+                ->route('public.reservas.barberos', $service)
+                ->with('error', 'El barbero seleccionado ya no está disponible.');
+        }
+
         return response()
-            ->view('public.reservas-horarios', compact('service'))
+            ->view('public.reservas-horarios', compact('service', 'barber'))
             ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
     }
 
@@ -86,6 +115,12 @@ class PublicBookingController extends Controller
             return redirect()
                 ->route('public.reservas.datos', $service)
                 ->with('error', 'Tu sesión expiró o abriste esta página en otra pestaña. Vuelve a ingresar tus datos para continuar.');
+        }
+
+        if (!session()->has('selected_barber_id')) {
+            return redirect()
+                ->route('public.reservas.barberos', $service)
+                ->with('error', 'Selecciona un barbero para continuar.');
         }
 
         $data = $request->validate([
@@ -109,7 +144,7 @@ class PublicBookingController extends Controller
                 ->withInput();
         }
 
-        $exists = Booking::where('service_id', $service->id)
+        $exists = Booking::where('barber_id', session('selected_barber_id'))
             ->where('booking_date', $data['booking_date'])
             ->where('booking_time', $data['booking_time'])
             ->where('status', 'confirmed')
@@ -137,6 +172,7 @@ class PublicBookingController extends Controller
 
         $booking = Booking::create([
             'service_id'    => $service->id,
+            'barber_id'     => session('selected_barber_id'),
             'full_name'     => $data['full_name'],
             'phone'         => $data['phone'],
             'email'         => $data['email'] ?? null,
@@ -196,8 +232,15 @@ class PublicBookingController extends Controller
             'email'     => 'nullable|email|max:255',
         ]);
 
+        if (!session()->has('selected_barber_id')) {
+            return redirect()
+                ->route('public.reservas.barberos', $service)
+                ->with('error', 'Selecciona un barbero para continuar.');
+        }
+
         session([
             'booking_data' => $validated,
+            'selected_barber_id' => session('selected_barber_id'),
         ]);
 
         return redirect()->route('public.reservas.horarios', $service);
@@ -211,7 +254,7 @@ class PublicBookingController extends Controller
             'date' => ['required', 'date'],
         ]);
 
-        $ocupados = Booking::where('service_id', $service->id)
+        $ocupados = Booking::where('barber_id', session('selected_barber_id'))
             ->where('booking_date', $data['date'])
             ->where('status', 'confirmed')
             ->pluck('booking_time')

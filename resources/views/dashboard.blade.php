@@ -175,6 +175,12 @@
                                     <div class="mt-1 text-sm text-gray-500 truncate">
                                         {{ $b->full_name }}
                                     </div>
+
+                                    @if ($b->barber)
+                                        <div class="mt-1 text-xs font-semibold text-[#c9a227] truncate">
+                                            {{ $b->barber->name }}
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <div class="mt-4 text-xs font-medium text-gray-400">

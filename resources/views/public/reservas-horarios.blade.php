@@ -20,7 +20,12 @@
         @include('public.partials.header', [
             'logoPath' => 'images/cusi-logo.png',
             'title' => 'Fecha y hora',
-            'subtitle' => 'Servicio: <span class="font-medium text-white">' . e($service->name) . '</span>',
+            'subtitle' =>
+                'Servicio: <span class="font-medium text-white">' .
+                e($service->name) .
+                '</span> · Barbero: <span class="font-medium text-white">' .
+                e($barber->name) .
+                '</span>',
             'backUrl' => route('public.reservas.datos', $service),
         ])
 

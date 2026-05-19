@@ -12,15 +12,20 @@
 
     <div class="min-h-screen">
 
-        <x-public.header title="Elige tu barbero" subtitle="Selecciona al profesional que realizará tu servicio."
-            logoPath="images/cusi-logo.png" :backUrl="route('public.reservas.show', $service)" />
+        @include('public.partials.header', [
+            'logoPath' => 'images/cusi-logo.png',
+            'title' => 'Elige tu barbero',
+            'subtitle' => 'Selecciona al profesional que realizará tu servicio.',
+            'backUrl' => route('public.reservas.show', $service),
+        ])
+
 
         <main class="max-w-5xl mx-auto px-4 py-8">
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
                 @foreach ($barbers as $barber)
-                    <a href="{{ route('public.reservas.datos', $service) }}"
+                    <a href="{{ route('public.reservas.datos', ['service' => $service, 'barber' => $barber->id]) }}"
                         class="group rounded-3xl border border-black/5 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
 
                         {{-- Foto --}}

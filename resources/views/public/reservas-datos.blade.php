@@ -14,10 +14,15 @@
     <div class="min-h-screen">
 
         @include('public.partials.header', [
-            'logoPath' => 'images/cusi-logo.png', // AJUSTA si tu logo tiene otra ruta
+            'logoPath' => 'images/cusi-logo.png',
             'title' => 'Tus datos',
-            'subtitle' => 'Servicio: <span class="font-medium text-white">' . e($service->name) . '</span>',
-            'backUrl' => route('public.reservas.show', $service),
+            'subtitle' =>
+                'Servicio: <span class="font-medium text-white">' .
+                e($service->name) .
+                '</span> · Barbero: <span class="font-medium text-white">' .
+                e($barber->name) .
+                '</span>',
+            'backUrl' => route('public.reservas.barberos', $service),
         ])
 
         <main class="max-w-3xl mx-auto px-4 py-10">

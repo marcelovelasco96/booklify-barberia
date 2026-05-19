@@ -47,6 +47,15 @@
                         </span>
                     </p>
                 @endif
+
+                @if ($booking?->barber)
+                    <p class="mt-1 text-sm text-gray-500">
+                        Barbero:
+                        <span class="font-semibold text-[#0b0f14]">
+                            {{ $booking->barber->name }}
+                        </span>
+                    </p>
+                @endif
             </div>
 
             {{-- Código --}}

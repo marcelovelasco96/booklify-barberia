@@ -14,11 +14,12 @@ class BookingController extends Controller
     {
         $status = request('status');
         $serviceId = request('service_id');
+        $barberId = request('barber_id');
         $date = request('date');
         $from = request('from');
         $to   = request('to');
 
-        $query = Booking::with('service')
+        $query = Booking::with(['service', 'barber'])
             ->orderBy('booking_date', 'asc')
             ->orderBy('booking_time', 'asc');
 
@@ -28,6 +29,10 @@ class BookingController extends Controller
 
         if ($serviceId) {
             $query->where('service_id', $serviceId);
+        }
+
+        if ($barberId) {
+            $query->where('barber_id', $barberId);
         }
 
         if ($date) {
@@ -41,8 +46,9 @@ class BookingController extends Controller
         $bookings = $query->paginate(20)->withQueryString();
 
         $services = \App\Models\Service::orderBy('name')->get(['id', 'name']);
+        $barbers = \App\Models\Barber::orderBy('name')->get(['id', 'name']);
 
-        return view('bookings.index', compact('bookings', 'services'));
+        return view('bookings.index', compact('bookings', 'services', 'barbers'));
     }
 
     public function updateStatus(Request $request, Booking $booking)
@@ -56,7 +62,11 @@ class BookingController extends Controller
         ]);
 
         if (!empty($booking->email)) {
-            Mail::to($booking->email)->send(new BookingStatusChangedMail($booking));
+            try {
+                Mail::to($booking->email)->send(new BookingStatusChangedMail($booking));
+            } catch (\Throwable $e) {
+                report($e);
+            }
         }
 
         $code = str_pad($booking->id, 5, '0', STR_PAD_LEFT);

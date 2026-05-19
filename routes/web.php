@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\BlockedSlotController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\BarberController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -17,6 +18,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('services', ServiceController::class);
+    Route::resource('barbers', BarberController::class);
     Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
     Route::patch('/bookings/{booking}/status', [BookingController::class, 'updateStatus'])->name('bookings.updateStatus');
     Route::get('/bookings/{booking}', [BookingController::class, 'show'])->name('bookings.show');
